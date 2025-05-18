@@ -4,22 +4,23 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 
+@Slf4j
 @Aspect
 public class Audit {
-    private static final Logger logger = LoggerFactory.getLogger(Audit.class);
 
-    @Before("execution(* *(..)) && !within(com.aop.checkcommonlib..*)")
+    @Before("@within(org.springframework.web.bind.annotation.RestController)")
     public void logMethodEntry(JoinPoint joinPoint) {
-        logger.info("Entering method: {} with arguments: {}", joinPoint.getSignature(), Arrays.toString(joinPoint.getArgs()));
+        log.info("Entering method: {} with arguments: {}", joinPoint.getSignature(),
+                Arrays.toString(joinPoint.getArgs()));
     }
 
-    @AfterReturning(pointcut = "execution(* *(..)) && !within(com.aop.checkcommonlib..*)", returning = "result")
+    @AfterReturning(pointcut = "@within(org.springframework.web.bind.annotation.RestController", returning = "result")
     public void logMethodExit(JoinPoint joinPoint, Object result) {
-        logger.info("Exiting method: {} with result: {}", joinPoint.getSignature(), result);
+        log.info("Exiting method: {} with result: {}", joinPoint.getSignature(), result);
     }
 }

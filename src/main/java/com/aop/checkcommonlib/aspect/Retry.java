@@ -1,17 +1,14 @@
 package com.aop.checkcommonlib.aspect;
 
 import com.aop.checkcommonlib.annotation.RetryOnFailure;
-import com.aop.checkcommonlib.properties.CheckCommonProperties;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
 @Aspect
 public class Retry {
-    private final CheckCommonProperties properties;
 
-    public Retry(CheckCommonProperties properties) {
-        this.properties = properties;
+    public Retry() {
     }
 
     @Around("@annotation(retryOnFailure)")
